@@ -1,0 +1,58 @@
+# ============================================
+# 学生成绩管理系统 - Docker Compose 配置
+# ============================================
+
+services:
+  # 应用服务
+  student-app:
+    build: .
+    image: essence-student-system:latest
+    container_name: student_app
+    # 控制台交互必需配置
+    stdin_open: true  # docker run -i
+    tty: true         # docker run -t
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Spring Boot 数据源配置（覆盖 application.properties）
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/student_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root_password
+    networks:
+      - student-network
+    restart: on-failure
+
+  # 数据库服务
+  db:
+    image: mysql:8.0
+    container_name: student_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: student_db
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    # MySQL 8.0 认证兼容性配置
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"  # 映射到 3307 避免与本地 MySQL 冲突
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro  # 初始化脚本
+    networks:
+      - student-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# 网络配置
+networks:
+  student-network:
+    driver: bridge
+
+# 数据卷配置
+volumes:
+  db_data:
+    driver: local

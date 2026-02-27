@@ -1,0 +1,80 @@
+# ===== System Files =====
+.DS_Store
+Thumbs.db
+._*
+*.swp
+*.swo
+*~
+
+# ===== IDEs =====
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+
+# ===== Gradle / Java / Kotlin =====
+.gradle/
+build/
+out/
+bin/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# ===== Maven (if used) =====
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+
+# ===== Logs =====
+logs/
+*.log
+*.log.*
+
+# ===== Docker =====
+docker-compose.override.yml
+.docker/
+
+# ===== Environment =====
+.env
+.env.local
+.env.*.local
+*.env
+
+# ===== Test & Coverage =====
+.coverage
+htmlcov/
+*.coveragerc
+test-results/
+jacoco/
+
+# ===== Temporary Files =====
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# ===== Application Specific =====
+# MySQL data volume (if local)
+mysql/data/
+
+# Spring Boot
+spring-shell.log
